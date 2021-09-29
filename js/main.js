@@ -2,7 +2,7 @@ var OnAllJSLoad = function() {
     console.log("on load");
     $rig = document.querySelector('#rig');
     // Let's use weboji. See: https://handsfree.js.org/ref/model/weboji
-    window.handsfree = new new Handsfree({showDebug: true, hands: true})
+    window.handsfree = new Handsfree({showDebug: true, hands: true})
     window.handsfree.start();
 
     // Used to hold tween values (without this things will be jerky)
@@ -47,9 +47,7 @@ var OnAllJSLoad = function() {
 
 }
 
+
 $(function(){
-    console.log("on js load done") ;
-    // hode loading
-    // show afrmae
-    OnAllJSLoad() ;
+  // OnAllJSLoad() ;
 });

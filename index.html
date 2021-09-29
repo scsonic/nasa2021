@@ -1,25 +1,39 @@
 <html>
   <head>
     <title>A-Frame: Look around handsfree</title>
-    <link rel="stylesheet" src="css/index.css" />
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"
+    <link rel="stylesheet" src="css/index.css" />
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/aframe.min.js"></script>
+    <script src="js/gsap.min.js"
             integrity="sha512-IQLehpLoVS4fNzl7IfH8Iowfm5+RiMGtHykgZJl9AWMgqx0AmJ6cRWcB+GaGVtIsnC4voMfm8f2vwtY+6oPjpQ==" crossorigin="anonymous"></script>
     <!-- Include Handsfree.js in head -->
-    <link rel="stylesheet" href="https://unpkg.com/handsfree@8.0.7/build/lib/assets/handsfree.css" />
-    <script src="https://unpkg.com/handsfree@8.0.7/build/lib/handsfree.js"></script>
+    <link rel="stylesheet" href="js/handsfree.css" />
+    <script src="js/handsfree.js"></script>
+
+    <style>
+
+      #camview {
+          z-index: 1110;
+          position: fixed;
+          width: 320px;
+          height: 240px ;
+          left: 0;
+          bottom: 0;
+          border: 5px solid #0ff ;
+          background-color: #ff0;
+      }
+    </style>
   </head>
   <body>
     <!-- Our cover/info card -->
     <div id="cover" class="handsfree-show-when-stopped">
-      <h1>Look around <a href="https://aframe.io/">A-Frame</a> handsfree</h1>
+      <h1>Team Grabbing Toys using handsfree for Nasa2021</h1>
       <p><img src="https://media1.giphy.com/media/YOPrRX6vTy6tb3frgt/giphy.gif"></p>
       <ul>
-        <li>Rotate head around to rotate camera</li>
-        <li>Move head around to move camera (slowly 😅)</li>
-        <li>Explore the walkthrough for this pen at <a href="https://handsfree.js.org/integration/aframe/look-around-handsfree" target="_blank">Handsfree.js.org</a></li>
+        <li>View the tool with camera + hand pose tracking</li>
+        <li><a href="https://handsfree.js.org/integration/aframe/look-around-handsfree" target="_blank">Handsfree.js.org</a></li>
+        <li><a href="https://aframe.io/">A-Frame</a></li>
       </ul>
 
         <!-- Button. Notice the helper classes :) -->
@@ -30,8 +44,15 @@
     </div>
   </div>
 
-    <!-- Aframe -->
-    <a-scene fog="type: exponential; color: #000; far: 30; density: 0.075">
+    <div id="camview">
+      <p>AAABBFJ:LFKJ:LA</p>
+      <img id="cam">
+    </div>
+    <!-- Aframe
+    fog="type: exponential; color: #000; far: 30; density: 0.075"
+    -->
+    <div id="main_canvas">
+    <a-scene style="z-index: -1">
       <a-assets>
         <img src="https://cdn.glitch.com/a2469ad6-a9ce-4918-8347-7348024d9f06%2F25P1geh.png?1543692382066" id="grid" crossorigin="anonymous">
       </a-assets>
@@ -54,6 +75,8 @@
       <a-entity light="color: #000; intensity: 0.5" position="-5 5 15"></a-entity>
       <a-entity light="color: #aaa; type: ambient;"></a-entity>
     </a-scene>
+    </div>
+
     <script src="js/main.js?123"></script>
   </body>
 </html>
