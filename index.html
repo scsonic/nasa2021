@@ -5,16 +5,45 @@
     <link rel="stylesheet" src="css/index.css" />
     <script src="js/jquery-3.6.0.min.js"></script>
     <script src="js/aframe.min.js"></script>
-    <script src="js/gsap.min.js"
-            integrity="sha512-IQLehpLoVS4fNzl7IfH8Iowfm5+RiMGtHykgZJl9AWMgqx0AmJ6cRWcB+GaGVtIsnC4voMfm8f2vwtY+6oPjpQ==" crossorigin="anonymous"></script>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js" crossorigin="anonymous"></script>-->
     <!-- Include Handsfree.js in head -->
-    <link rel="stylesheet" href="js/handsfree.css" />
-    <script src="js/handsfree.js"></script>
+
+    <link rel="stylesheet" href="js/handsfree.css?tt=34123" />
+    <script src="js/handsfree.js?tt=123"></script>
+
+<!--      <link rel="stylesheet" href="https://unpkg.com/handsfree@8.5.1/build/lib/assets/handsfree.css" />-->
+<!--    <script src="https://unpkg.com/handsfree@8.5.1/build/lib/handsfree.js"></script>-->
+
 
     <style>
 
+      #cover {
+        position: fixed;
+        z-index: 10;
+        width: 600px;
+        height: 400px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+
+        background: #ccc;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 3px 3px 3px rgba(0,0,0,0.35);
+      }
+
+     div.handsfree-debugger {
+        z-index: 10;
+        position: fixed;
+        border: 3px solid #aaa ;
+        width: 320px;
+        height: auto ;
+        left: 0;
+        bottom: 0;
+      }
+
       #camview {
-          z-index: 1110;
+          z-index: 10;
           position: fixed;
           width: 320px;
           height: 240px ;
@@ -28,26 +57,26 @@
   <body>
     <!-- Our cover/info card -->
     <div id="cover" class="handsfree-show-when-stopped">
-      <h1>Team Grabbing Toys using handsfree for Nasa2021</h1>
-      <p><img src="https://media1.giphy.com/media/YOPrRX6vTy6tb3frgt/giphy.gif"></p>
+      <h3>Team Grabbing Toys using handsfree for VIRTUAL PLANETARY EXPLORATION V2.0</h3>
+<!--      <p><img src="https://media1.giphy.com/media/YOPrRX6vTy6tb3frgt/giphy.gif"></p>-->
       <ul>
-        <li>View the tool with camera + hand pose tracking</li>
+        <li>Press Start Webcam when you ready, it will take few seconds to load the Tensorflow.js Model</li>
+        <li>Requirment: webcam. (Recommand using a laptop)</li>
         <li><a href="https://handsfree.js.org/integration/aframe/look-around-handsfree" target="_blank">Handsfree.js.org</a></li>
         <li><a href="https://aframe.io/">A-Frame</a></li>
       </ul>
 
         <!-- Button. Notice the helper classes :) -->
     <div align=center>
-      <button onclick="handsfree.start()" class="handsfree-show-when-stopped handsfree-hide-when-loading">Start webcam</button>
+      <button onclick="OnAllJSLoad()" class="handsfree-show-when-stopped handsfree-hide-when-loading">Start webcam</button>
       <button class="handsfree-show-when-loading">Loading...</button>
       <button onclick="handsfree.stop()" class="handsfree-show-when-started">Stop webcam</button>
     </div>
-  </div>
 
-    <div id="camview">
-      <p>AAABBFJ:LFKJ:LA</p>
-      <img id="cam">
-    </div>
+      <div align="right">
+        <a href="" target=_blank>Reference</a>
+      </div>
+  </div>
     <!-- Aframe
     fog="type: exponential; color: #000; far: 30; density: 0.075"
     -->
@@ -61,6 +90,8 @@
       <a-entity id="rig" position="0 1 -5">
         <a-camera></a-camera>
       </a-entity>
+
+      <a-box id="test_box" color="tomato" position="0 1 -15" depth="2" height="4" width="0.5"></a-box>
 
       <!-- Walls -->
       <a-entity id="wall-bottom" geometry="primitive: plane; width: 10000; height: 10000;" rotation="-90 0 0" position="0 -2 0" material="src: #grid; repeat: 10000 10000;"></a-entity>
