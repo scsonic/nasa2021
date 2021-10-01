@@ -83,15 +83,29 @@
     <div id="main_canvas">
     <a-scene style="z-index: -1">
       <a-assets>
+            <a-asset-item id="earth" src="model/scene.gltf"></a-asset-item>
+
         <img src="https://cdn.glitch.com/a2469ad6-a9ce-4918-8347-7348024d9f06%2F25P1geh.png?1543692382066" id="grid" crossorigin="anonymous">
       </a-assets>
+
+      <a-gltf-model src="#earth" position="0 1 -14"></a-gltf-model>
 
       <!-- Camera Rig: This is what we control handsfree -->
       <a-entity id="rig" position="0 1 -5">
         <a-camera></a-camera>
       </a-entity>
 
-      <a-box id="test_box" color="tomato" position="0 1 -15" depth="2" height="4" width="0.5"></a-box>
+      <a-cone id=cc1 color="tomato" position="0 0.2 0" radius-bottom="0.2" radius-top="0.1">
+        <a-cone id=cc2 color="tomato" position="0 0.3 0" radius-bottom="0.3" radius-top="0.2">
+          <a-cone id=cc3 color="tomato" position="0 0.4 0" radius-bottom="0.4" radius-top="0.3">
+            <a-cone id=cc4 color="tomato" position="0 0.5 0" radius-bottom="0.5" radius-top="0.4">
+            </a-cone>
+          </a-cone>
+        </a-cone>
+      </a-cone>
+
+
+      <a-box id="test_box" color="tomato" position="0 1 -15" depth="1" height="3" width="0.5"></a-box>
 
       <!-- Walls -->
       <a-entity id="wall-bottom" geometry="primitive: plane; width: 10000; height: 10000;" rotation="-90 0 0" position="0 -2 0" material="src: #grid; repeat: 10000 10000;"></a-entity>

@@ -1,6 +1,6 @@
 var OnAllJSLoad = function() {
     console.log("on load");
-    $rig = document.querySelector('#rig');
+    //$rig = document.querySelector('#rig');
     // Let's use weboji. See: https://handsfree.js.org/ref/model/weboji
     window.handsfree = new Handsfree({showDebug: true, handpose: true})
     window.handsfree.start();
@@ -72,7 +72,24 @@ var OnProcessHandpose = function(handpose) {
         rot.y = THREE.Math.radToDeg( rot.y ) ;
         rot.z = THREE.Math.radToDeg( rot.z ) ;
         test_box.setAttribute('rotation', {x: rot.x, y: rot.y, z: rot.z});
+        console.log("xyz:" + parseInt(rot.x) + ", " + parseInt(rot.y) + ", " + parseInt(rot.z)) ;
 
+        var c1 = document.querySelector('#cc1');
+        var c2 = document.querySelector('#cc2');
+        var c3 = document.querySelector('#cc3');
+        var c4 = document.querySelector('#cc4');
+
+        var cc = [c1, c2, c3, c4] ;
+        var fingers = [5,6,7,8] ; //  [8,7,6,5] ;
+        for (f = 0 ; f < 4 ; f++ ){
+            c = cc[f] ;
+            finger = fingers[f] ;
+            var r = handpose.meshes[finger].rotation;
+            var xx = THREE.Math.radToDeg( r.x ) ;
+            var yy = THREE.Math.radToDeg( r.y ) ;
+            var zz = THREE.Math.radToDeg( r.z ) ;
+            c.setAttribute('rotation', {x: xx, y: yy, z: zz});
+        }
     }
     else {
         console.log("too low, skip, move to center");
