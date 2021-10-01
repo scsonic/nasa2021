@@ -80,7 +80,7 @@ var testLoadMainObject = function(name) {
             mainObject.add(gltf.scene) ;
             scene.add(mainObject) ;
 
-            gltf.scene.children[0].material = new THREE.MeshLambertMaterial();
+            gltf.scene.children[0].material = new THREE.MeshNormalMaterial();
             gltf.scene.position.set(0,0,20) ;
             gltf.scene.scale.set(50,50,50) ;
 
@@ -104,7 +104,7 @@ var testLoadMainObject = function(name) {
 var testLoadWrench = function() {
     var loader = new THREE.STLLoader();
     loader.load( 'model/wrench.stl', function ( geometry ) {
-        const material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
+        const material = new THREE.MeshToonMaterial( { color: 0xCC0000 } );
         const mesh = new THREE.Mesh( geometry, material );
 
         mesh.position.set( 0, 0, 0 );
