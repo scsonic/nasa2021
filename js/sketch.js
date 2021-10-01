@@ -3,11 +3,8 @@
 /* global describe handpose tf io THREE*/
 
 var handposeModel = null; // this will be loaded with the handpose model
-
 var videoDataLoaded = false; // is webcam capture ready?
-
 var statusText = "Loading handpose model...";
-
 var myHands = []; // hands detected
                   // currently handpose only supports single hand, so this will be either empty or singleton
 
@@ -24,6 +21,7 @@ document.body.appendChild(dbg.canvas);
 
 // boilerplate to initialize threejs scene
 var scene = new THREE.Scene();
+scene.background = new THREE.Color( 0xbfe3dd );
 var camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
@@ -41,7 +39,7 @@ navigator.mediaDevices.getUserMedia({audio:false,video:true}).then(function(stre
 // hide the video element
 capture.style.position="absolute"
 capture.style.opacity= 0
-capture.style.zIndex =-100 // "send to back"
+capture.style.zIndex = 0  // "send to back"
 
 // signal when capture is ready and set size for debug canvas
 capture.onloadeddata = function(){
@@ -55,9 +53,53 @@ capture.onloadeddata = function(){
 
 
 // certian materials require a light source, which you can add here:
-// var directionalLight = new THREE.DirectionalLight( 0xffffff, 1.0 );
-// scene.add( directionalLight );
+console.log("add direction light") ;
+var directionalLight = new THREE.DirectionalLight( 0xffffff, 1.0 );
+directionalLight.position.set(0,0,400) ;
+scene.add( directionalLight );
 
+var mainObject ;
+var testLoadMainObject = function(name) {
+    console.log("start to load gltf")
+    // Instantiate a loader
+    const loader = new THREE.GLTFLoader();
+    // Optional: Provide a DRACOLoader instance to decode compressed mesh data
+//    const dracoLoader = new DRACOLoader();
+//    dracoLoader.setDecoderPath( '/examples/js/libs/draco/' );
+//    loader.setDRACOLoader( dracoLoader );
+
+    // Load a glTF resource
+    loader.load(
+        'model/scene.gltf',
+        function ( gltf ) {
+            console.log("gltf loaded") ;
+            //scene.add( gltf.scene );
+            mainObject = new THREE.Object3D();
+            mainObject.add(gltf.scene) ;
+            scene.add(mainObject) ;
+
+            gltf.scene.children[0].material = new THREE.MeshLambertMaterial();
+            gltf.scene.position.set(0,0,20) ;
+            gltf.scene.scale.set(50,50,50) ;
+
+            gltf.animations; // Array<THREE.AnimationClip>
+            gltf.scene; // THREE.Group
+            gltf.scenes; // Array<THREE.Group>
+            gltf.cameras; // Array<THREE.Camera>
+            gltf.asset; // Object
+        },
+        // called while loading is progressing
+        function ( xhr ) {
+            console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+        },
+        // called when loading has errors
+        function ( error ) {
+            console.log( 'An error happened' );
+        }
+    );
+}
+
+testLoadMainObject("") ;
 
 for (var i = 0; i < 21; i++){ // 21 keypoints
   var {isPalm,next} = getLandmarkProperty(i);
@@ -79,10 +121,30 @@ for (var i = 0; i < 21; i++){ // 21 keypoints
   handMeshes.push(obj);
 }
 
+// test add mesh
+
+console.log("add debug obj");
+var debug_obj = new THREE.Object3D();
+var debug_geometry = new THREE.CylinderGeometry( 100, 50, 10);
+var debug_material = new THREE.MeshNormalMaterial();
+var debug_mesh = new THREE.Mesh( debug_geometry, debug_material );
+debug_mesh.rotation.x = Math.PI/2;
+debug_mesh.position.set(0,0,10) ;
+debug_obj.add( debug_mesh );
+scene.add(debug_obj);
+//handMeshes.push(obj);
+
+
+
 // update threejs object position and orientation from the detected hand pose
 // threejs has a "scene" model, so we don't have to specify what to draw each frame,
 // instead we put objects at right positions and threejs renders them all
 function updateMeshes(hand){
+  console.log("update meshes... hands") ;
+  //console.log("camera pos:") ;
+  //console.log(camera.position) ;
+
+
   for (var i = 0; i < handMeshes.length; i++){
 
     var {isPalm,next} = getLandmarkProperty(i);
@@ -100,7 +162,24 @@ function updateMeshes(hand){
     // compute orientation of the bone
     handMeshes[i].lookAt(p1);
 
+    if ( i == 10){
+        console.log("hand mesh pos, rot =") ;
+        console.log(handMeshes[i].position);
+        console.log(handMeshes[i].rotation) ;
+    }
+    if (i == 10) {
+        console.log("update mesh rot:") ;
+        console.log(handMeshes[i].rotation)
+        //mainObject.position.set(mid.x,mid.y,mid.z);
+        //mainObject.lookAt(p1) ;
+        var rot = handMeshes[i].rotation ;
+        debug_obj.rotation.set(rot.x, rot.y, rot.z) ;
+        mainObject.rotation.set(rot.x, rot.y, rot.z) ;
+    }
   }
+
+
+
 }
 
 
@@ -214,3 +293,4 @@ function render() {
 }
 
 render(); // kick off the rendering loop!
+
