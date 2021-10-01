@@ -10,6 +10,8 @@ var myHands = []; // hands detected
 
 var handMeshes = []; // array of threejs objects that makes up the hand rendering
 
+var smooth = {x:0, y:0, z:0} ;
+
 // html canvas for drawing debug view
 var dbg = document.createElement("canvas").getContext('2d');
 dbg.canvas.style.position="absolute";
@@ -21,9 +23,9 @@ document.body.appendChild(dbg.canvas);
 
 // boilerplate to initialize threejs scene
 var scene = new THREE.Scene();
-scene.background = new THREE.Color( 0xbfe3dd );
+// scene.background = new THREE.Color( 0xbfe3dd );
 var camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
-var renderer = new THREE.WebGLRenderer();
+var renderer = new THREE.WebGLRenderer({alpha: true});
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
@@ -182,18 +184,33 @@ function updateMeshes(hand){
     handMeshes[i].lookAt(p1);
 
     if ( i == 10){
-        console.log("hand mesh pos, rot =") ;
-        console.log(handMeshes[i].position);
-        console.log(handMeshes[i].rotation) ;
+//        console.log("hand mesh pos, rot =") ;
+//        console.log(handMeshes[i].position);
+//        console.log(handMeshes[i].rotation) ;
     }
-    if (i == 10) {
-        console.log("update mesh rot:") ;
-        console.log(handMeshes[i].rotation)
+    if (i == 5) {
+        //console.log("update mesh rot:") ;
+        //console.log(handMeshes[i].rotation)
         //mainObject.position.set(mid.x,mid.y,mid.z);
         //mainObject.lookAt(p1) ;
         var rot = handMeshes[i].rotation ;
+        if ( smooth.x == 0 ) {
+            smooth.x = rot.x ;
+            smooth.y = rot.y ;
+            smooth.z = rot.z
+        }
+        else {
+            var sm_r1 = 9/10 ;
+            var sm_r2 = 1/10 ;
+            smooth.x = (smooth.x * sm_r1 + rot.z * sm_r2 ) ;
+            smooth.y = (smooth.y * sm_r1 + rot.y * sm_r2 ) ;
+            smooth.z = (smooth.z * sm_r1 + rot.z * sm_r2 ) ;
+            console.log("rot, smooth") ;
+            console.log(rot) ;
+            console.log(smooth) ;
+        }
         debug_obj.rotation.set(rot.x, rot.y, rot.z) ;
-        mainObject.rotation.set(rot.x, rot.y, rot.z) ;
+        mainObject.rotation.set(smooth.x, smooth.y, smooth.z) ;
     }
   }
 
