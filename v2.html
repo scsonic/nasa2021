@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>Nasa2021 Team Grabbing Toy</title>
+
+    <link rel="stylesheet" src="css/index.css" />
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <style>
+
+      #cover {
+        position: fixed;
+        z-index: 10;
+        width: 600px;
+        height: 400px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+
+        background: #ccc;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 3px 3px 3px rgba(0,0,0,0.35);
+      }
+    </style>
+  </head>
+<body style="margin:0px">
+    <!-- include the Glitch button to show what the webpage is about and
+        to make it easier for folks to view source and remix -->
+  <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+  <script src="https://button.glitch.me/button.js" defer></script>
+</body>
+
+<script>
+var isOnHTTPS = window.location.href.startsWith("https");
+if (!isOnHTTPS){
+  window.location.href = window.location.href.replace("http","https");
+}
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
+
+<!-- Be sure to use tfjs 1.7.4, in tfjs 2 they broke their own handpose model-->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@1.7.4/dist/tf-core.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter@1.7.4/dist/tf-converter.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose@0.0.4/dist/handpose.min.js"></script>
+<script src="js/sketch.js"></script>
+
+
+<script>
+// draw the FPS
+;;;(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+</script>
+
+</html>
