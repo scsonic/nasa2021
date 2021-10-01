@@ -55,7 +55,7 @@ capture.onloadeddata = function(){
 // certian materials require a light source, which you can add here:
 console.log("add direction light") ;
 var directionalLight = new THREE.DirectionalLight( 0xffffff, 1.0 );
-directionalLight.position.set(0,0,400) ;
+directionalLight.position.set(0,0, 400) ;
 scene.add( directionalLight );
 
 var mainObject ;
@@ -99,7 +99,26 @@ var testLoadMainObject = function(name) {
     );
 }
 
-testLoadMainObject("") ;
+var testLoadWrench = function() {
+    var loader = new THREE.STLLoader();
+    loader.load( 'model/wrench.stl', function ( geometry ) {
+        const material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
+        const mesh = new THREE.Mesh( geometry, material );
+
+        mesh.position.set( 0, 0, 0 );
+        mesh.rotation.set( 0, 0, 0 );
+        mesh.scale.set( 3,3,3 );
+
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        scene.add( mesh );
+        mainObject = mesh ;
+    } );
+}
+
+// testLoadMainObject("") ;
+testLoadWrench("") ;
+
 
 for (var i = 0; i < 21; i++){ // 21 keypoints
   var {isPalm,next} = getLandmarkProperty(i);
@@ -125,7 +144,7 @@ for (var i = 0; i < 21; i++){ // 21 keypoints
 
 console.log("add debug obj");
 var debug_obj = new THREE.Object3D();
-var debug_geometry = new THREE.CylinderGeometry( 100, 50, 10);
+var debug_geometry = new THREE.CylinderGeometry( 10, 5, 1);
 var debug_material = new THREE.MeshNormalMaterial();
 var debug_mesh = new THREE.Mesh( debug_geometry, debug_material );
 debug_mesh.rotation.x = Math.PI/2;
