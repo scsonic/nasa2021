@@ -1,16 +1,45 @@
-// sketch.js
 
-/* global describe handpose tf io THREE*/
+var mixer = undefined ;
+var model_list = [] ;
+var model_index = 0 ;
+var model_callback_list = [] ;
+
+var isLoadingModel = false ;
+// init model and model callback
+
+//model_list.push("model/doge_coin/scene.gltf") ;
+//model_callback_list.push(function(gltf) {
+//})
+
+model_list.push("model/dogecoin/scene.gltf") ;
+model_callback_list.push(function(gltf) {
+})
+
+model_list.push("model/electric_drill/scene.gltf") ;
+model_callback_list.push(function(gltf) {
+})
+
+model_list.push("model/locking_pliers_mechanical_tool/scene.gltf") ;
+model_callback_list.push(function(gltf) {
+})
+
+model_list.push("model/sci-fi_box/scene.gltf") ;
+model_callback_list.push(function(gltf) {
+})
+
+model_list.push("model/wrench_craftsman_6in/scene.gltf") ;
+model_callback_list.push(function(gltf) {
+    //gltf.scene.position.set(0,0,20) ;
+    gltf.scene.scale.set(400,400,400) ;
+})
 
 var handposeModel = null; // this will be loaded with the handpose model
 var videoDataLoaded = false; // is webcam capture ready?
 var statusText = "Loading handpose model...";
-var myHands = []; // hands detected
-                  // currently handpose only supports single hand, so this will be either empty or singleton
-
+var myHands = []; // single hand only
 var handMeshes = []; // array of threejs objects that makes up the hand rendering
 
-var smooth = {x:0, y:0, z:0} ;
+var smooth = {x:0, y:0, z:0} ; // for smooth moving the object
 
 // html canvas for drawing debug view
 var dbg = document.createElement("canvas").getContext('2d');
@@ -20,9 +49,9 @@ dbg.canvas.style.top = "0px";
 dbg.canvas.style.zIndex = 100; // "bring to front"
 document.body.appendChild(dbg.canvas);
 
-
 // boilerplate to initialize threejs scene
 var scene = new THREE.Scene();
+var clock = new THREE.Clock();
 // scene.background = new THREE.Color( 0xbfe3dd );
 var camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
 var renderer = new THREE.WebGLRenderer({alpha: true});
@@ -53,55 +82,85 @@ capture.onloadeddata = function(){
   camera.position.z = capture.videoWidth/2; // rough estimate for suitable camera distance based on FOV
 }
 
+var ambientLight = new THREE.AmbientLight(0xffffff) ;
+ambientLight.position.set(0,0,0) ;
+scene.add(ambientLight)
 
-// certian materials require a light source, which you can add here:
-console.log("add direction light") ;
-var directionalLight = new THREE.DirectionalLight( 0xffffff, 1.0 );
-directionalLight.position.set(0,0, 400) ;
-scene.add( directionalLight );
+var mainObject = undefined ;
+var testLoadNextObject = function() {
+    if ( isLoadingModel == true ) {
+        console.log("is loading model, skip") ;
+        return ;
+    }
+    model_index = (model_index + 1) % model_list.length ;
+    testLoadMainObject(model_list[model_index], model_callback_list[model_index]) ;
+};
 
-var mainObject ;
-var testLoadMainObject = function(name) {
-    console.log("start to load gltf")
+
+var testLoadMainObject = function(name, callback) {
+    isLoadingModel = true ;
+    if ( mainObject ) scene.remove(mainObject) ;
+
+    console.log("start to load gltf:" + name) ;
     // Instantiate a loader
     const loader = new THREE.GLTFLoader();
-    // Optional: Provide a DRACOLoader instance to decode compressed mesh data
-//    const dracoLoader = new DRACOLoader();
-//    dracoLoader.setDecoderPath( '/examples/js/libs/draco/' );
-//    loader.setDRACOLoader( dracoLoader );
 
     // Load a glTF resource
     loader.load(
-        'model/scene.gltf',
+        name,
         function ( gltf ) {
+            isLoadingModel = false ;
             console.log("gltf loaded") ;
             //scene.add( gltf.scene );
             mainObject = new THREE.Object3D();
             mainObject.add(gltf.scene) ;
+
+            if ( callback ) { callback(gltf) } ;
+
             scene.add(mainObject) ;
 
-            gltf.scene.children[0].material = new THREE.MeshNormalMaterial();
+            if ( gltf.scene.children != undefined ) {
+                gltf.scene.children[0].material = new THREE.MeshNormalMaterial();
+            }
             gltf.scene.position.set(0,0,20) ;
-            gltf.scene.scale.set(50,50,50) ;
+            //gltf.scene.scale.set(50,50,50) ;
 
             gltf.animations; // Array<THREE.AnimationClip>
+            console.log("animations:") ;
+            console.log(gltf.animations) ;
+
+            mainObject._gltf = gltf ;
+
+
             gltf.scene; // THREE.Group
             gltf.scenes; // Array<THREE.Group>
             gltf.cameras; // Array<THREE.Camera>
             gltf.asset; // Object
         },
-        // called while loading is progressing
         function ( xhr ) {
+            isLoadingModel = false ;
             console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
         },
-        // called when loading has errors
         function ( error ) {
+            isLoadingModel = false ;
+            console.log(error) ;
             console.log( 'An error happened' );
         }
     );
 }
 
-var testLoadWrench = function() {
+/**
+    if no animation: slide show once
+    if has animation: play once
+*/
+var testPlayOnce = function() {
+	mixer = new THREE.AnimationMixer( mainObject._gltf.scene );
+	var action = mixer.clipAction( mainObject._gltf.animations[0] ) ;
+	action.setLoop( THREE.LoopOnce ) ;
+	action.play() ;
+}
+
+var testLoadIndex = function() {
     var loader = new THREE.STLLoader();
     loader.load( 'model/wrench.stl', function ( geometry ) {
         const material = new THREE.MeshToonMaterial( { color: 0xCC0000 } );
@@ -119,7 +178,10 @@ var testLoadWrench = function() {
 }
 
 // testLoadMainObject("") ;
-testLoadWrench("") ;
+model_index = 3;
+testLoadMainObject(model_list[model_index]) ;
+//testLoadMainObject(model_list[2]) ;
+//testLoadWrench("") ;
 
 
 for (var i = 0; i < 21; i++){ // 21 keypoints
@@ -188,7 +250,7 @@ function updateMeshes(hand){
 //        console.log(handMeshes[i].position);
 //        console.log(handMeshes[i].rotation) ;
     }
-    if (i == 5) {
+    if (i == 10) {
         //console.log("update mesh rot:") ;
         //console.log(handMeshes[i].rotation)
         //mainObject.position.set(mid.x,mid.y,mid.z);
@@ -200,17 +262,20 @@ function updateMeshes(hand){
             smooth.z = rot.z
         }
         else {
-            var sm_r1 = 9/10 ;
-            var sm_r2 = 1/10 ;
+            var sm_r1 = 7/10 ;
+            var sm_r2 = 3/10 ;
             smooth.x = (smooth.x * sm_r1 + rot.z * sm_r2 ) ;
             smooth.y = (smooth.y * sm_r1 + rot.y * sm_r2 ) ;
             smooth.z = (smooth.z * sm_r1 + rot.z * sm_r2 ) ;
-            console.log("rot, smooth") ;
-            console.log(rot) ;
-            console.log(smooth) ;
+//            console.log("rot, smooth") ;
+//            console.log(rot) ;
+//            console.log(smooth) ;
         }
         debug_obj.rotation.set(rot.x, rot.y, rot.z) ;
-        mainObject.rotation.set(smooth.x, smooth.y, smooth.z) ;
+        if ( mainObject != undefined ) {
+            mainObject.rotation.set(smooth.x, smooth.y, smooth.z) ;
+        }
+
     }
   }
 
@@ -308,6 +373,9 @@ function render() {
     })
   }
 
+  var delta = clock.getDelta();
+  if ( mixer ) mixer.update( delta );
+
   dbg.clearRect(0,0,dbg.canvas.width,dbg.canvas.height);
 
   dbg.save();
@@ -326,6 +394,8 @@ function render() {
 
   // render the 3D scene!
   renderer.render( scene, camera );
+
+
 }
 
 render(); // kick off the rendering loop!
