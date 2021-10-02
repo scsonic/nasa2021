@@ -1,0 +1,11 @@
+Model Information:
+* title:	sci-fi box
+* source:	https://sketchfab.com/3d-models/sci-fi-box-133ca455682548e39bb2664823739023
+* author:	2amz (https://sketchfab.com/2amz)
+
+Model License:
+* license type:	CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)
+* requirements:	Author must be credited. No commercial use. Modified versions must have the same license.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "sci-fi box" (https://sketchfab.com/3d-models/sci-fi-box-133ca455682548e39bb2664823739023) by 2amz (https://sketchfab.com/2amz) licensed under CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)

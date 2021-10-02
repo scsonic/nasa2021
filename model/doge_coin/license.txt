@@ -1,0 +1,11 @@
+Model Information:
+* title:	Doge Coin
+* source:	https://sketchfab.com/3d-models/doge-coin-a5b3ddf0b6724b0b81f019edbffc67f0
+* author:	refikyasaroglu (https://sketchfab.com/refikyasaroglu)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Doge Coin" (https://sketchfab.com/3d-models/doge-coin-a5b3ddf0b6724b0b81f019edbffc67f0) by refikyasaroglu (https://sketchfab.com/refikyasaroglu) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
