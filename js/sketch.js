@@ -11,7 +11,7 @@ var isLoadingModel = false ;
 //model_callback_list.push(function(gltf) {
 //})
 
-model_list.push("model/dogecoin/scene.gltf") ;
+model_list.push("model/doge_coin/scene.gltf") ;
 model_callback_list.push(function(gltf) {
 })
 
@@ -157,6 +157,7 @@ var testPlayOnce = function() {
 	mixer = new THREE.AnimationMixer( mainObject._gltf.scene );
 	var action = mixer.clipAction( mainObject._gltf.animations[0] ) ;
 	action.setLoop( THREE.LoopOnce ) ;
+	action.timeScale = 3;
 	action.play() ;
 }
 
@@ -203,21 +204,6 @@ for (var i = 0; i < 21; i++){ // 21 keypoints
   scene.add(obj);
   handMeshes.push(obj);
 }
-
-// test add mesh
-
-console.log("add debug obj");
-var debug_obj = new THREE.Object3D();
-var debug_geometry = new THREE.CylinderGeometry( 10, 5, 1);
-var debug_material = new THREE.MeshNormalMaterial();
-var debug_mesh = new THREE.Mesh( debug_geometry, debug_material );
-debug_mesh.rotation.x = Math.PI/2;
-debug_mesh.position.set(0,0,10) ;
-debug_obj.add( debug_mesh );
-scene.add(debug_obj);
-//handMeshes.push(obj);
-
-
 
 // update threejs object position and orientation from the detected hand pose
 // threejs has a "scene" model, so we don't have to specify what to draw each frame,
