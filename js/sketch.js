@@ -13,9 +13,9 @@ var model_callback_list = [] ;
 var isLoadingModel = false ;
 // init model and model callback
 
-//model_list.push("model/doge_coin/scene.gltf") ;
-//model_callback_list.push(function(gltf) {
-//})
+model_list.push("model/stl/wrench.stl") ;
+    model_callback_list.push(function(gltf) {
+})
 
 model_list.push("model/doge_coin/scene.gltf") ;
 model_callback_list.push(function(gltf) {
@@ -95,6 +95,17 @@ ambientLight.position.set(0,0,0) ;
 scene.add(ambientLight)
 
 var mainObject = undefined ;
+var updateModuleInfo = function() {
+    $("#model_info").text(model_list[model_index] + "(" + (model_index+1) + "/" + model_list.length + ")") ;
+}
+
+var updateAdjustText = function(){
+    var text = "Scale:" + mainScale + "<BR>"  ;
+    text = text + "Rot=" + mainRot.x + ", " + mainRot.y + ", " + mainRot.z + "<BR>";
+    text = text + "Pos=" + mainPos.x + ", " + mainPos.y + ", " + mainPos.z ;
+    $("#range_debug").html(text) ;
+}
+
 var testLoadNextObject = function() {
     if ( isLoadingModel == true ) {
         console.log("is loading model, skip") ;
@@ -102,6 +113,7 @@ var testLoadNextObject = function() {
     }
     model_index = (model_index + 1) % model_list.length ;
     testLoadMainObject(model_list[model_index], model_callback_list[model_index]) ;
+    updateModuleInfo() ;
 };
 
 var testLoadPrevObject = function() {
@@ -111,11 +123,19 @@ var testLoadPrevObject = function() {
     }
     model_index = (model_index - 1 + model_list.length ) % model_list.length ;
     testLoadMainObject(model_list[model_index], model_callback_list[model_index]) ;
+    updateModuleInfo() ;
 };
 
 
 
 var testLoadMainObject = function(name, callback) {
+    updateAdjustText() ;
+
+    if (name.indexOf(".stl") > 0 ) {
+        testLoadSTL(name, callback) ;
+        return ;
+    }
+
     isLoadingModel = true ;
     if ( mainObject ) scene.remove(mainObject) ;
 
@@ -127,6 +147,7 @@ var testLoadMainObject = function(name, callback) {
     loader.load(
         name,
         function ( gltf ) {
+            updateModuleInfo() ;
             isLoadingModel = false ;
             console.log("gltf loaded") ;
             //scene.add( gltf.scene );
@@ -176,16 +197,24 @@ var testLoadMainObject = function(name, callback) {
 */
 var testPlayOnce = function() {
 	mixer = new THREE.AnimationMixer( mainObject._gltf.scene );
-	var action = mixer.clipAction( mainObject._gltf.animations[0] ) ;
-	action.setLoop( THREE.LoopOnce ) ;
-	action.timeScale = 3;
-	action.play() ;
+	if ( mainObject._gltf.hasOwnProperty("animations")) {
+		var action = mixer.clipAction( mainObject._gltf.animations[0] ) ;
+        action.setLoop( THREE.LoopOnce ) ;
+        action.timeScale = 3;
+        action.play() ;
+	}
 }
 
-var testLoadIndex = function() {
+var testLoadSTL= function(name, callback) {
+    updateAdjustText() ;
+    isLoadingModel = true ;
+    if ( mainObject ) scene.remove(mainObject) ;
+
     var loader = new THREE.STLLoader();
-    loader.load( 'model/wrench.stl', function ( geometry ) {
-        const material = new THREE.MeshToonMaterial( { color: 0xCC0000 } );
+    loader.load( 'model/stl/wrench.stl', function ( geometry ) {
+        updateModuleInfo() ;
+        isLoadingModel = false ;
+        const material = new THREE.MeshNormalMaterial( { color: 0xCC0000 } );
         const mesh = new THREE.Mesh( geometry, material );
 
         mesh.position.set( 0, 0, 0 );
@@ -194,8 +223,19 @@ var testLoadIndex = function() {
 
         mesh.castShadow = true;
         mesh.receiveShadow = true;
-        scene.add( mesh );
-        mainObject = mesh ;
+        //scene.add( mesh );
+        var obj = new THREE.Object3D();
+        obj.add(mesh) ;
+        obj.scene = mesh ;
+        scene.add(obj) ;
+        mainObject = obj
+        mainObject._gltf = obj ;
+
+        if ( callback ) { callback(mesh) } ;
+
+        var axesHelper = new THREE.AxesHelper( 150 );
+        mainObject.add( axesHelper );
+
     } );
 }
 
@@ -226,11 +266,100 @@ for (var i = 0; i < 21; i++){ // 21 keypoints
   handMeshes.push(obj);
 }
 
+
+var printRad = function(r) {
+    var line = "(" + parseInt(THREE.Math.radToDeg(r.x)) + ",";
+    line = line + parseInt(THREE.Math.radToDeg(r.y)) + ",";
+    line = line + parseInt(THREE.Math.radToDeg(r.z)) + ")" ;
+
+    return line ;
+}
+
+var lastIndexFingerStatus = false ;
+var indexFingerCnt = 0 ;
+
+var onChangeFingerStatus = function() {
+    testPlayOnce() ;
+}
+
+var toggleIndexFingerCheck = function(val) {
+    if ( lastIndexFingerStatus == false && val == true) {
+        console.log("send Trigger!!!") ;
+        onChangeFingerStatus() ;
+        $("#index_finger_status").removeClass("btn-info");
+        $("#index_finger_status").addClass("btn-primary");
+        $("#index_finger_status").text("IndexFinger Trigger");
+
+    }
+    else {
+        $("#index_finger_status").removeClass("btn-primary");
+        $("#index_finger_status").addClass("btn-info");
+        $("#index_finger_status").text("IndexFinger None");
+    }
+    lastIndexFingerStatus = false ;
+}
+/**
+    check index finger status:
+    trigger: return true
+    else: false ;
+
+**/
+var checkIndexFingerStatus = function() {
+
+    if (!handMeshes) {
+        return ;
+    }
+
+    console.log("-------");
+    console.log("----------");
+
+    var check_finger = [6,7] ;
+    for (var i = 0; i < check_finger.length; i++){
+        var f = check_finger[i] ;
+        var mesh = handMeshes[f] ;
+
+        console.log("finger:" + f) ;
+        //console.log(mesh.position) ;
+        //console.log(mesh.rotation.x) ;
+        console.log(printRad(mesh.rotation)) ;
+    }
+
+    var v = 0 ;
+    var finger_1 = 6 ;
+    var finger_2 = 7 ;
+
+    x = parseInt(THREE.Math.radToDeg(handMeshes[finger_1].rotation.x)) ;
+    y = parseInt(THREE.Math.radToDeg(handMeshes[finger_1].rotation.y)) ;
+    z = parseInt(THREE.Math.radToDeg(handMeshes[finger_1].rotation.z)) ;
+
+    xx = parseInt(THREE.Math.radToDeg(handMeshes[finger_2].rotation.x));
+    yy = parseInt(THREE.Math.radToDeg(handMeshes[finger_2].rotation.y)) ;
+    zz = parseInt(THREE.Math.radToDeg(handMeshes[finger_2].rotation.z)) ;
+
+    vx = (x-xx) * (x-xx) ;
+    vy = (y-yy) * (y-yy) ;
+    vz = (z-zz) * (z-zz) ;
+    v = Math.sqrt( (vx + vy + vz) / 3 );
+    console.log("calc v=" + v) ;
+
+    if ( v > 90) {
+        indexFingerCnt = indexFingerCnt + 1
+        if ( indexFingerCnt > 3 ) {
+            // has trigger finger!!
+            toggleIndexFingerCheck(true) ;
+        }
+    }
+    else {
+        indexFingerCnt = 0 ;
+        toggleIndexFingerCheck(false) ;
+    }
+}
+
 // update threejs object position and orientation from the detected hand pose
 // threejs has a "scene" model, so we don't have to specify what to draw each frame,
 // instead we put objects at right positions and threejs renders them all
 function updateMeshes(hand){
-  console.log("update meshes... hands") ;
+  //console.log("update meshes... hands") ;
   //console.log("camera pos:") ;
   //console.log(camera.position) ;
 
@@ -288,21 +417,20 @@ function updateMeshes(hand){
             //console.log("set method v2") ;
             var rot = handMeshes[i].rotation ;
             var pos = handMeshes[i].position ;
-            console.log(pos) ;
+            //console.log(pos) ;
             if ( mainObject ) {
                 //gltf.scene.scale.set(50,50,50) ;
                 mainObject._gltf.scene.scale.set(mainScale, mainScale, mainScale) ;
                 mainObject.rotation.set(rot.x + THREE.Math.degToRad(mainRot.x), rot.y + THREE.Math.degToRad(mainRot.y), rot.z + THREE.Math.degToRad(mainRot.z)) ;
                 mainObject.position.set(pos.x + mainPos.x, pos.y + mainPos.y, pos.z + mainPos.z ) ;
             }
+
         }
-
-
     }
-  }
+  } // end of for 21 fingers
 
-
-
+  // update tirgger status
+  checkIndexFingerStatus() ;
 }
 
 
@@ -416,22 +544,17 @@ function render() {
 
   // render the 3D scene!
   renderer.render( scene, camera );
-
-
 }
 
 render(); // kick off the rendering loop!
 
-
-var updateMain = function(){
-    var text = "Scale:" + mainScale + "\n"  ;
-    text = text + "Rot=" + mainRot.x + ", " + mainRot.y + ", " + mainRot.z + "\n";
-    text = text + "Pos=" + mainPos.x + ", " + mainPos.y + ", " + mainPos.z ;
-    $("#range_debug").text(text) ;
-}
-
 var bind_html = function() {
     console.log("bind html") ;
+
+
+    $("index_finger_status").click(function(){
+        testPlayOnce() ;
+    }) ;
 
     $(".btnNext").click(function(){
         console.log("next module") ;
@@ -440,7 +563,7 @@ var bind_html = function() {
 
     $(".btnPrev").click(function(){
         console.log("prev module!") ;
-        testLoadNextObject() ;
+        testLoadPrevObject() ;
     }) ;
 
 
@@ -452,40 +575,40 @@ var bind_html = function() {
 
      $("#main_scale").change(function(){
         mainScale = $(this).val() ;
-        updateMain() ;
+        updateAdjustText() ;
     });
 
 
     $("#main_rot_x").change(function(){
         mainRot.x = $(this).val() ;
-        updateMain() ;
+        updateAdjustText() ;
     });
 
     $("#main_rot_y").change(function(){
         mainRot.y = $(this).val() ;
-        updateMain() ;
+        updateAdjustText() ;
     });
 
     $("#main_rot_z").change(function(){
         mainRot.z = $(this).val() ;
-        updateMain() ;
+        updateAdjustText() ;
     });
 
     //
 
     $("#main_pos_x").change(function(){
         mainPos.x = $(this).val() ;
-        updateMain() ;
+        updateAdjustText() ;
     });
 
     $("#main_pos_y").change(function(){
         mainPos.y = $(this).val() ;
-        updateMain() ;
+        updateAdjustText() ;
     });
 
     $("#main_pos_z").change(function(){
         mainPos.z = $(this).val() ;
-        updateMain() ;
+        updateAdjustText() ;
     });
 }
 
