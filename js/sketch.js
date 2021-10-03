@@ -1,4 +1,10 @@
 
+
+// for global adjust
+var mainScale = 1 ;
+var mainRot = {x:0, y:0, z:0} ;
+var mainPos = {x:0, y:0, z:0} ;
+
 var mixer = undefined ;
 var model_list = [] ;
 var model_index = 0 ;
@@ -17,11 +23,12 @@ model_callback_list.push(function(gltf) {
 
 model_list.push("model/electric_drill/scene.gltf") ;
 model_callback_list.push(function(gltf) {
+    gltf.scene.scale.set(2.5, 2.5, 2.5) ; // set the basic scale
 })
 
-model_list.push("model/locking_pliers_mechanical_tool/scene.gltf") ;
-model_callback_list.push(function(gltf) {
-})
+//model_list.push("model/locking_pliers_mechanical_tool/scene.gltf") ;
+//model_callback_list.push(function(gltf) {
+//})
 
 model_list.push("model/sci-fi_box/scene.gltf") ;
 model_callback_list.push(function(gltf) {
@@ -30,7 +37,7 @@ model_callback_list.push(function(gltf) {
 model_list.push("model/wrench_craftsman_6in/scene.gltf") ;
 model_callback_list.push(function(gltf) {
     //gltf.scene.position.set(0,0,20) ;
-    gltf.scene.scale.set(400,400,400) ;
+    gltf.scene.scale.set(500,500,500) ;
 })
 
 var handposeModel = null; // this will be loaded with the handpose model
@@ -38,6 +45,7 @@ var videoDataLoaded = false; // is webcam capture ready?
 var statusText = "Loading handpose model...";
 var myHands = []; // single hand only
 var handMeshes = []; // array of threejs objects that makes up the hand rendering
+var handObj ;
 
 var smooth = {x:0, y:0, z:0} ; // for smooth moving the object
 
@@ -96,6 +104,16 @@ var testLoadNextObject = function() {
     testLoadMainObject(model_list[model_index], model_callback_list[model_index]) ;
 };
 
+var testLoadPrevObject = function() {
+    if ( isLoadingModel == true ) {
+        console.log("is loading model, skip") ;
+        return ;
+    }
+    model_index = (model_index - 1 + model_list.length ) % model_list.length ;
+    testLoadMainObject(model_list[model_index], model_callback_list[model_index]) ;
+};
+
+
 
 var testLoadMainObject = function(name, callback) {
     isLoadingModel = true ;
@@ -115,6 +133,9 @@ var testLoadMainObject = function(name, callback) {
             mainObject = new THREE.Object3D();
             mainObject.add(gltf.scene) ;
 
+            var axesHelper = new THREE.AxesHelper( 150 );
+            mainObject.add( axesHelper );
+
             if ( callback ) { callback(gltf) } ;
 
             scene.add(mainObject) ;
@@ -122,7 +143,7 @@ var testLoadMainObject = function(name, callback) {
             if ( gltf.scene.children != undefined ) {
                 gltf.scene.children[0].material = new THREE.MeshNormalMaterial();
             }
-            gltf.scene.position.set(0,0,20) ;
+            gltf.scene.position.set(0,0,0) ;
             //gltf.scene.scale.set(50,50,50) ;
 
             gltf.animations; // Array<THREE.AnimationClip>
@@ -179,7 +200,6 @@ var testLoadIndex = function() {
 }
 
 // testLoadMainObject("") ;
-model_index = 3;
 testLoadMainObject(model_list[model_index]) ;
 //testLoadMainObject(model_list[2]) ;
 //testLoadWrench("") ;
@@ -191,7 +211,7 @@ for (var i = 0; i < 21; i++){ // 21 keypoints
   var obj = new THREE.Object3D(); // a parent object to facilitate rotation/scaling
 
   // we make each bone a cylindrical shape, but you can use your own models here too
-  var geometry = new THREE.CylinderGeometry( isPalm?5:10, 5, 1);
+  var geometry = new THREE.CylinderGeometry( isPalm?0.5:1.0, 0.5, 1);
 
   var material = new THREE.MeshNormalMaterial();
   // another possible material (after adding a light source):
@@ -199,6 +219,7 @@ for (var i = 0; i < 21; i++){ // 21 keypoints
 
   var mesh = new THREE.Mesh( geometry, material );
   mesh.rotation.x = Math.PI/2;
+  mesh.visible = false ; // hand live hand
 
   obj.add( mesh );
   scene.add(obj);
@@ -236,31 +257,46 @@ function updateMeshes(hand){
 //        console.log(handMeshes[i].position);
 //        console.log(handMeshes[i].rotation) ;
     }
-    if (i == 10) {
-        //console.log("update mesh rot:") ;
-        //console.log(handMeshes[i].rotation)
-        //mainObject.position.set(mid.x,mid.y,mid.z);
-        //mainObject.lookAt(p1) ;
-        var rot = handMeshes[i].rotation ;
-        if ( smooth.x == 0 ) {
-            smooth.x = rot.x ;
-            smooth.y = rot.y ;
-            smooth.z = rot.z
+    if (i == 5) {
+        if ( false ) { // play method 1
+            //console.log("update mesh rot:") ;
+            //console.log(handMeshes[i].rotation)
+            //mainObject.position.set(mid.x,mid.y,mid.z);
+            //mainObject.lookAt(p1) ;
+            var rot = handMeshes[i].rotation ;
+            if ( smooth.x == 0 ) {
+                smooth.x = rot.x ;
+                smooth.y = rot.y ;
+                smooth.z = rot.z
+            }
+            else {
+                var sm_r1 = 7/10 ;
+                var sm_r2 = 3/10 ;
+                smooth.x = (smooth.x * sm_r1 + rot.z * sm_r2 ) ;
+                smooth.y = (smooth.y * sm_r1 + rot.y * sm_r2 ) ;
+                smooth.z = (smooth.z * sm_r1 + rot.z * sm_r2 ) ;
+    //            console.log("rot, smooth") ;
+    //            console.log(rot) ;
+    //            console.log(smooth) ;
+            }
+            //debug_obj.rotation.set(rot.x, rot.y, rot.z) ;
+            if ( mainObject != undefined ) {
+                mainObject.rotation.set(smooth.x, smooth.y, smooth.z) ;
+            }
         }
-        else {
-            var sm_r1 = 7/10 ;
-            var sm_r2 = 3/10 ;
-            smooth.x = (smooth.x * sm_r1 + rot.z * sm_r2 ) ;
-            smooth.y = (smooth.y * sm_r1 + rot.y * sm_r2 ) ;
-            smooth.z = (smooth.z * sm_r1 + rot.z * sm_r2 ) ;
-//            console.log("rot, smooth") ;
-//            console.log(rot) ;
-//            console.log(smooth) ;
+        else { // play method v2
+            //console.log("set method v2") ;
+            var rot = handMeshes[i].rotation ;
+            var pos = handMeshes[i].position ;
+            console.log(pos) ;
+            if ( mainObject ) {
+                //gltf.scene.scale.set(50,50,50) ;
+                mainObject._gltf.scene.scale.set(mainScale, mainScale, mainScale) ;
+                mainObject.rotation.set(rot.x + THREE.Math.degToRad(mainRot.x), rot.y + THREE.Math.degToRad(mainRot.y), rot.z + THREE.Math.degToRad(mainRot.z)) ;
+                mainObject.position.set(pos.x + mainPos.x, pos.y + mainPos.y, pos.z + mainPos.z ) ;
+            }
         }
-        debug_obj.rotation.set(rot.x, rot.y, rot.z) ;
-        if ( mainObject != undefined ) {
-            mainObject.rotation.set(smooth.x, smooth.y, smooth.z) ;
-        }
+
 
     }
   }
@@ -386,3 +422,74 @@ function render() {
 
 render(); // kick off the rendering loop!
 
+
+var updateMain = function(){
+    var text = "Scale:" + mainScale + "\n"  ;
+    text = text + "Rot=" + mainRot.x + ", " + mainRot.y + ", " + mainRot.z + "\n";
+    text = text + "Pos=" + mainPos.x + ", " + mainPos.y + ", " + mainPos.z ;
+    $("#range_debug").text(text) ;
+}
+
+var bind_html = function() {
+    console.log("bind html") ;
+
+    $(".btnNext").click(function(){
+        console.log("next module") ;
+        testLoadNextObject() ;
+    }) ;
+
+    $(".btnPrev").click(function(){
+        console.log("prev module!") ;
+        testLoadNextObject() ;
+    }) ;
+
+
+    $(".btnPrint").click(function(){
+        console.log("print module!") ;
+    }) ;
+
+
+
+     $("#main_scale").change(function(){
+        mainScale = $(this).val() ;
+        updateMain() ;
+    });
+
+
+    $("#main_rot_x").change(function(){
+        mainRot.x = $(this).val() ;
+        updateMain() ;
+    });
+
+    $("#main_rot_y").change(function(){
+        mainRot.y = $(this).val() ;
+        updateMain() ;
+    });
+
+    $("#main_rot_z").change(function(){
+        mainRot.z = $(this).val() ;
+        updateMain() ;
+    });
+
+    //
+
+    $("#main_pos_x").change(function(){
+        mainPos.x = $(this).val() ;
+        updateMain() ;
+    });
+
+    $("#main_pos_y").change(function(){
+        mainPos.y = $(this).val() ;
+        updateMain() ;
+    });
+
+    $("#main_pos_z").change(function(){
+        mainPos.z = $(this).val() ;
+        updateMain() ;
+    });
+}
+
+// basic js
+$(function(){
+    bind_html() ;
+}) ;
