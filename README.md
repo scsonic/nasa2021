@@ -18,5 +18,14 @@ Interact 3D-model via Handpose estimation.
 [https://2021.spaceappschallenge.org/challenges/statements/virtual-planetary-exploration-v20/teams/teething-toys/project][Link To Nasa]
 
 
+###### How To Run
+
+this project is a pure client-base Web.
+Host by GitHub Pages: https://scsonic.github.io/nasa2021/ 
+
+If you have problems about three.js, tensorflow.js, javascript or html/css or run demo error, feel free to contact at Issue Page https://github.com/scsonic/nasa2021/issues , we will fix to bugs and publish new update at TEAM BOARD and GITHUB.
+
+ 
+
 [Youtube Video]: https://youtu.be/JQYQx5wINXM
 [Link To Nasa]: https://2021.spaceappschallenge.org/challenges/statements/virtual-planetary-exploration-v20/teams/teething-toys/project
