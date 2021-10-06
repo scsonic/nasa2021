@@ -69,13 +69,16 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">3D Print Preview (Simulation)</h5>
+        <h5 class="modal-title" id="exampleModalLabel">3D Print (Simulation, Press Play Video to start)</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <img src="clip/print.gif"/>
+        <video id="vid" controls autoplay loop style="width: 100%; ">
+            <source src="clip/print2.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
