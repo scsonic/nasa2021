@@ -39,7 +39,7 @@ model_list.push("model/litter_scoop/scene.gltf") ;
     model_callback_list.push(function(gltf) {
     //gltf.scene.position.set(0,0,20) ;
     console.log("litter scoop callback") ;
-    mainScaleAdjust = 10 ;
+    mainScaleAdjust = 6 ;
 });
 
 model_list.push("model/low_poly_pickaxe/scene.gltf") ;
@@ -59,6 +59,7 @@ model_callback_list.push(function(gltf) {
 
 model_list.push("model/electric_drill/scene.gltf") ;
 model_callback_list.push(function(gltf) {
+    mainScaleAdjust = 2 ;
     gltf.scene.scale.set(2.5, 2.5, 2.5) ; // set the basic scale
 })
 
