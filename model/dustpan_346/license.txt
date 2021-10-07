@@ -1,0 +1,11 @@
+Model Information:
+* title:	Dustpan △346
+* source:	https://sketchfab.com/3d-models/dustpan-346-85e03bbaf084488ea66c11df8d009fd5
+* author:	ŌTOlab (https://sketchfab.com/O-TOlab)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Dustpan △346" (https://sketchfab.com/3d-models/dustpan-346-85e03bbaf084488ea66c11df8d009fd5) by ŌTOlab (https://sketchfab.com/O-TOlab) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

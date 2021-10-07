@@ -2,6 +2,7 @@
 
 // for global adjust
 var mainScale = 1 ;
+var mainScaleAdjust = 0 ; // for plus main scale
 var mainRot = {x:0, y:0, z:0} ;
 var mainPos = {x:0, y:0, z:0} ;
 
@@ -15,15 +16,54 @@ var isLoadingModel = false ;
 
 model_list.push("model/stl/wrench.stl") ;
     model_callback_list.push(function(gltf) {
-})
+});
 
-model_list.push("model/doge_coin/scene.gltf") ;
+model_list.push("model/stl/v1.stl") ;
+    model_callback_list.push(function(gltf) {
+});
+
+model_list.push("model/stl/Apollo_lunar_module.stl") ;
+    model_callback_list.push(function(gltf) {
+    mainRot.y = 90 ;
+    $("#main_rot_y").val(90) ;
+});
+
+
+model_list.push("model/dustpan_346/scene.gltf") ;
+    model_callback_list.push(function(gltf) {
+    //gltf.scene.position.set(0,0,20) ;
+    mainScaleAdjust = 500 ;
+});
+
+model_list.push("model/litter_scoop/scene.gltf") ;
+    model_callback_list.push(function(gltf) {
+    //gltf.scene.position.set(0,0,20) ;
+    console.log("litter scoop callback") ;
+    mainScaleAdjust = 10 ;
+});
+
+model_list.push("model/low_poly_pickaxe/scene.gltf") ;
 model_callback_list.push(function(gltf) {
-})
+    //gltf.scene.position.set(0,0,20) ;
+    mainScaleAdjust = 400 ;
+});
+
+model_list.push("model/rake/scene.gltf") ;
+model_callback_list.push(function(gltf) {
+    //gltf.scene.position.set(0,0,20) ;
+    mainScaleAdjust = 100 ;
+    //gltf.scene.scale.set(3,3,3);
+});
+
+
 
 model_list.push("model/electric_drill/scene.gltf") ;
 model_callback_list.push(function(gltf) {
     gltf.scene.scale.set(2.5, 2.5, 2.5) ; // set the basic scale
+})
+
+model_list.push("model/doge_coin/scene.gltf") ;
+model_callback_list.push(function(gltf) {
 })
 
 //model_list.push("model/locking_pliers_mechanical_tool/scene.gltf") ;
@@ -34,11 +74,7 @@ model_list.push("model/sci-fi_box/scene.gltf") ;
 model_callback_list.push(function(gltf) {
 })
 
-model_list.push("model/wrench_craftsman_6in/scene.gltf") ;
-model_callback_list.push(function(gltf) {
-    //gltf.scene.position.set(0,0,20) ;
-    gltf.scene.scale.set(500,500,500) ;
-})
+
 
 var handposeModel = null; // this will be loaded with the handpose model
 var videoDataLoaded = false; // is webcam capture ready?
@@ -129,6 +165,9 @@ var testLoadPrevObject = function() {
 
 
 var testLoadMainObject = function(name, callback) {
+
+    mainScaleAdjust = 0 ;
+
     updateAdjustText() ;
 
     if (name.indexOf(".stl") > 0 ) {
@@ -211,7 +250,7 @@ var testLoadSTL= function(name, callback) {
     if ( mainObject ) scene.remove(mainObject) ;
 
     var loader = new THREE.STLLoader();
-    loader.load( 'model/stl/wrench.stl', function ( geometry ) {
+    loader.load( name, function ( geometry ) {
         updateModuleInfo() ;
         isLoadingModel = false ;
         const material = new THREE.MeshNormalMaterial( { color: 0xCC0000 } );
@@ -310,18 +349,18 @@ var checkIndexFingerStatus = function() {
         return ;
     }
 
-    console.log("-------");
-    console.log("----------");
+    //console.log("-------");
+    //console.log("----------");
 
     var check_finger = [6,7] ;
     for (var i = 0; i < check_finger.length; i++){
         var f = check_finger[i] ;
         var mesh = handMeshes[f] ;
 
-        console.log("finger:" + f) ;
+        //console.log("finger:" + f) ;
         //console.log(mesh.position) ;
         //console.log(mesh.rotation.x) ;
-        console.log(printRad(mesh.rotation)) ;
+        //console.log(printRad(mesh.rotation)) ;
     }
 
     var v = 0 ;
@@ -340,7 +379,7 @@ var checkIndexFingerStatus = function() {
     vy = (y-yy) * (y-yy) ;
     vz = (z-zz) * (z-zz) ;
     v = Math.sqrt( (vx + vy + vz) / 3 );
-    console.log("calc v=" + v) ;
+    //console.log("calc v=" + v) ;
 
     if ( v > 90) {
         indexFingerCnt = indexFingerCnt + 1
@@ -420,7 +459,8 @@ function updateMeshes(hand){
             //console.log(pos) ;
             if ( mainObject ) {
                 //gltf.scene.scale.set(50,50,50) ;
-                mainObject._gltf.scene.scale.set(mainScale, mainScale, mainScale) ;
+                var t = mainScale + mainScaleAdjust ;
+                mainObject._gltf.scene.scale.set(t, t, t) ;
                 mainObject.rotation.set(rot.x + THREE.Math.degToRad(mainRot.x), rot.y + THREE.Math.degToRad(mainRot.y), rot.z + THREE.Math.degToRad(mainRot.z)) ;
                 mainObject.position.set(pos.x + mainPos.x, pos.y + mainPos.y, pos.z + mainPos.z ) ;
             }

@@ -1,0 +1,371 @@
+{
+  "accessors": [
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 318,
+      "max": [
+        0.11840764433145523,
+        0.99981111288070679,
+        -0.99256020784378052
+      ],
+      "min": [
+        -0.68899029493331909,
+        -0.99978846311569214,
+        -1.2664121389389038
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 3816,
+      "componentType": 5126,
+      "count": 318,
+      "max": [
+        0.99980419874191284,
+        0.99965935945510864,
+        0.99996620416641235
+      ],
+      "min": [
+        -0.99999624490737915,
+        -0.99886715412139893,
+        -0.99987608194351196
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 1896,
+      "max": [
+        317
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 7632,
+      "componentType": 5126,
+      "count": 129,
+      "max": [
+        0.10747414827346802,
+        0.11872676014900208,
+        -0.212932288646698
+      ],
+      "min": [
+        -0.073961943387985229,
+        -0.062480084598064423,
+        -1.0208661556243896
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 9180,
+      "componentType": 5126,
+      "count": 129,
+      "max": [
+        0.9963950514793396,
+        0.99639517068862915,
+        0.99997854232788086
+      ],
+      "min": [
+        -0.99639499187469482,
+        -0.99639517068862915,
+        -0.00033292011357843876
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 7584,
+      "componentType": 5125,
+      "count": 672,
+      "max": [
+        128
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 10728,
+      "componentType": 5126,
+      "count": 129,
+      "max": [
+        0.089712798595428467,
+        0.092481210827827454,
+        4.5711202621459961
+      ],
+      "min": [
+        -0.040968768298625946,
+        -0.038035247474908829,
+        -0.27287587523460388
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 12276,
+      "componentType": 5126,
+      "count": 129,
+      "max": [
+        0.99639511108398438,
+        0.99639517068862915,
+        0.99851453304290771
+      ],
+      "min": [
+        -0.99639517068862915,
+        -0.99639511108398438,
+        -3.9996215491555631e-05
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 10272,
+      "componentType": 5125,
+      "count": 672,
+      "max": [
+        128
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "cariaga.info (https://sketchfab.com/cariaga.info)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/rake-ff9916c70f5a4d04a70ed2305ac104d2",
+      "title": "Rake"
+    },
+    "generator": "Sketchfab-7.87.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 12960,
+      "byteOffset": 0,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 13824,
+      "byteOffset": 12960,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 26784,
+      "uri": "scene.bin"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ],
+      "name": "Rake",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.5,
+          0.5,
+          0.5,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 1
+      }
+    },
+    {
+      "doubleSided": true,
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ],
+      "name": "Rake_copy1",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.5,
+          0.5,
+          0.5,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 1
+      }
+    },
+    {
+      "doubleSided": true,
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ],
+      "name": "Rake1_1",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.5,
+          0.5,
+          0.5,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 1
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Rake_Rake_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0
+          },
+          "indices": 2,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Rake_copy1_Rake_copy1_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 4,
+            "POSITION": 3
+          },
+          "indices": 5,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Rake1_1_Rake1_1_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 7,
+            "POSITION": 6
+          },
+          "indices": 8,
+          "material": 2,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "name": "RootNode (gltf orientation matrix)",
+      "rotation": [
+        -0.70710678118654746,
+        -0,
+        -0,
+        0.70710678118654757
+      ]
+    },
+    {
+      "children": [
+        2
+      ],
+      "name": "RootNode (model correction matrix)"
+    },
+    {
+      "children": [
+        3
+      ],
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "name": "cb247cc6aff840c183d2eee4e7ddfba0.fbx"
+    },
+    {
+      "children": [
+        4,
+        6,
+        8
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        5
+      ],
+      "name": "Rake"
+    },
+    {
+      "mesh": 0,
+      "name": "Rake_Rake_0"
+    },
+    {
+      "children": [
+        7
+      ],
+      "name": "Rake_copy1"
+    },
+    {
+      "mesh": 1,
+      "name": "Rake_copy1_Rake_copy1_0"
+    },
+    {
+      "children": [
+        9
+      ],
+      "name": "Rake1_1"
+    },
+    {
+      "mesh": 2,
+      "name": "Rake1_1_Rake1_1_0"
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "OSG_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ]
+}
+
