@@ -29,6 +29,23 @@
         border-radius: 15px;
         box-shadow: 3px 3px 3px rgba(0,0,0,0.35);
       }
+
+      #tips {
+        transform: translate(-50%);
+          bottom: 0% ;
+          left: 50%;
+          position: fixed;
+          z-index: 10;
+          width: 600px ;
+          height: auto ;
+          background: #ccc ;
+          opacity: 0.5
+
+      }
+      #tips p {
+        width: 100% ;
+        text-align: center ;
+      }
     </style>
 
     <script>
@@ -45,6 +62,7 @@
     <span class="btn btn-warning btnPrev glyphicon glyphicon-chevron-left"> Next Tool</span>
     <span class="btn btn-warning btnNext glyphicon  glyphicon-chevron-right"> Prev Tool</span>
     <span class="btn btn-warning btnPrint glyphicon glyphicon-print" data-toggle="modal" data-target="#exampleModal"> 3D Print</span>
+    <a href="https://github.com/scsonic/nasa2021" target="_blank" class="btn btn-warning btnHelp glyphicon glyphicon-Help" data-toggle="modal">?</a>
   </div>
 
   <div class="glitchButton" style="position:fixed;bottom:20px;right:20px; color: white;" >
@@ -87,6 +105,9 @@
   </div>
 </div>
 
+      <div class="tips" id="tips">
+        <p> Loading Handpose and 3D-Models... </p>
+      </div>
 </body>
 
 <script>

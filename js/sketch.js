@@ -10,6 +10,7 @@ var mixer = undefined ;
 var model_list = [] ;
 var model_index = 0 ;
 var model_callback_list = [] ;
+var model_tips = [] ;
 
 var isLoadingModel = false ;
 // init model and model callback
@@ -17,16 +18,19 @@ var isLoadingModel = false ;
 model_list.push("model/stl/wrench.stl") ;
     model_callback_list.push(function(gltf) {
 });
+model_tips.push("This isn't the first 3D-printed object made in space, but it is the first created to meet the needs of an astronaut. When International Space Station Commander Barry Wilmore needed a wrench, NASA knew just what to do. They `e-mailed` him one. This is the first time an object has been designed on Earth and then transmitted to space for manufacture.") ;
 
 model_list.push("model/stl/v1.stl") ;
     model_callback_list.push(function(gltf) {
 });
+model_tips.push("Wide-bloom header for replace, filter out small rocks") ;
 
 model_list.push("model/stl/Apollo_lunar_module.stl") ;
     model_callback_list.push(function(gltf) {
     mainRot.y = 90 ;
     $("#main_rot_y").val(90) ;
 });
+model_tips.push("The Apollo luna module, you can pick tools/cars form the module.") ;
 
 
 model_list.push("model/dustpan_346/scene.gltf") ;
@@ -34,19 +38,23 @@ model_list.push("model/dustpan_346/scene.gltf") ;
     //gltf.scene.position.set(0,0,20) ;
     mainScaleAdjust = 500 ;
 });
+model_tips.push("dustpan, easy to clean dusts on the lunar surface") ;
+
 
 model_list.push("model/litter_scoop/scene.gltf") ;
     model_callback_list.push(function(gltf) {
     //gltf.scene.position.set(0,0,20) ;
     console.log("litter scoop callback") ;
-    mainScaleAdjust = 6 ;
+    mainScaleAdjust = 4 ;
 });
+model_tips.push("litter scoop, pick few dust on the moon") ;
 
 model_list.push("model/low_poly_pickaxe/scene.gltf") ;
 model_callback_list.push(function(gltf) {
     //gltf.scene.position.set(0,0,20) ;
     mainScaleAdjust = 400 ;
 });
+model_tips.push("pick-axe is a generally T-shaped hand tool used for prying. Its head is typically metal, attached perpendicularly to a longer handle, traditionally made of wood, occasionally metal, and increasingly fiberglass. ") ;
 
 model_list.push("model/rake/scene.gltf") ;
 model_callback_list.push(function(gltf) {
@@ -54,6 +62,7 @@ model_callback_list.push(function(gltf) {
     mainScaleAdjust = 100 ;
     //gltf.scene.scale.set(3,3,3);
 });
+model_tips.push("The Apollo astronauts were provided a small rake that could be used to gather and collect pebbles larger than 1 cm in diameter from the lunar regolith. The rake head (this object) was attached to a handle, which while on the lunar surface was designed to attach to a standard extension handle. Lunar rakes were employed on Apollo 15-17, from July 1971 to December 1972. This artifact was used for training.") ;
 
 
 
@@ -62,18 +71,18 @@ model_callback_list.push(function(gltf) {
     mainScaleAdjust = 2 ;
     gltf.scene.scale.set(2.5, 2.5, 2.5) ; // set the basic scale
 })
+model_tips.push("Power up the drill, Adjust the torque so it's low, Fit the screw into the slot on the drill bit, Line up the screw with the hole, Make sure the drill is vertical. Pull the trigger on the drill and press gently into the screw.") ;
+
 
 model_list.push("model/doge_coin/scene.gltf") ;
 model_callback_list.push(function(gltf) {
 })
-
-//model_list.push("model/locking_pliers_mechanical_tool/scene.gltf") ;
-//model_callback_list.push(function(gltf) {
-//})
+model_tips.push("SpaceX to Launch DOGE-1 to the Moon! (Source: Elon Musk's twitter)") ;
 
 model_list.push("model/sci-fi_box/scene.gltf") ;
 model_callback_list.push(function(gltf) {
 })
+model_tips.push("Open the box to collect sample.") ;
 
 
 
@@ -133,6 +142,7 @@ scene.add(ambientLight)
 
 var mainObject = undefined ;
 var updateModuleInfo = function() {
+    $("#tips p").text( model_tips[model_index]) ;
     $("#model_info").text(model_list[model_index] + "(" + (model_index+1) + "/" + model_list.length + ")") ;
 }
 
