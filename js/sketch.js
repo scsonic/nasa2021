@@ -142,7 +142,13 @@ scene.add(ambientLight)
 
 var mainObject = undefined ;
 var updateModuleInfo = function() {
-    $("#tips p").text( model_tips[model_index]) ;
+    if ( isLoadingModel ) {
+        $("#tips p").text( model_tips[model_index]) ;
+    }
+    else {
+        // skip tips when tensorflow not done
+    }
+
     $("#model_info").text(model_list[model_index] + "(" + (model_index+1) + "/" + model_list.length + ")") ;
 }
 
