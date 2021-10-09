@@ -248,10 +248,12 @@ var testLoadMainObject = function(name, callback) {
 var testPlayOnce = function() {
 	mixer = new THREE.AnimationMixer( mainObject._gltf.scene );
 	if ( mainObject._gltf.hasOwnProperty("animations")) {
-		var action = mixer.clipAction( mainObject._gltf.animations[0] ) ;
-        action.setLoop( THREE.LoopOnce ) ;
-        action.timeScale = 3;
-        action.play() ;
+	    if ( mainObject._gltf.animations.length > 0) {
+	    	var action = mixer.clipAction( mainObject._gltf.animations[0] ) ;
+            action.setLoop( THREE.LoopOnce ) ;
+            action.timeScale = 3;
+            action.play() ;
+	    }
 	}
 }
 
