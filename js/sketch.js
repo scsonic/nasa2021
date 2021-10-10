@@ -47,13 +47,13 @@ model_list.push("model/dustpan_346/scene.gltf") ;
 model_tips.push("The sampling scoop is used to collect soil material or other lunar samples too small for the rake or tongs to pick up. The stainless Steel pan of the scoop, which is 5 cm (2 inches) by 11 cm (41/2 inches) by 15 cm (6 inches) has a flat bottom flanged on both sides and apartial cover on the top to prevent loss of contents. The pan is adjustable from horizontal to 55 degrees and 90 degrees from the horizontal for use in scooping andtrenching. The scoop handle is compatible with the extension handle. ") ;
 
 
-model_list.push("model/litter_scoop/scene.gltf") ;
-    model_callback_list.push(function(gltf) {
-    //gltf.scene.position.set(0,0,20) ;
-    console.log("litter scoop callback") ;
-    mainScaleAdjust = 4 ;
-});
-model_tips.push("litter scoop, pick few dust on the moon") ;
+//model_list.push("model/litter_scoop/scene.gltf") ;
+//    model_callback_list.push(function(gltf) {
+//    //gltf.scene.position.set(0,0,20) ;
+//    console.log("litter scoop callback") ;
+//    mainScaleAdjust = 4 ;
+//});
+//model_tips.push("litter scoop, pick few dust on the moon") ;
 
 model_list.push("model/low_poly_pickaxe/scene.gltf") ;
 model_callback_list.push(function(gltf) {
