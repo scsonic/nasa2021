@@ -20,17 +20,23 @@ model_list.push("model/stl/wrench.stl") ;
 });
 model_tips.push("This isn't the first 3D-printed object made in space, but it is the first created to meet the needs of an astronaut. When International Space Station Commander Barry Wilmore needed a wrench, NASA knew just what to do. They `e-mailed` him one. This is the first time an object has been designed on Earth and then transmitted to space for manufacture.") ;
 
+model_list.push("model2/hammer/scene.gltf") ;
+model_callback_list.push(function(gltf) {
+    mainScaleAdjust = 12;
+})
+model_tips.push("Hammer - This tool serves three functions: as a sampling hammer to chip or break large rocks, as a pick, and as a haper to drive the drive tubes or other pieces of lunar equipment. has a small hammer face on one end, a broad flat blade on the other, and large hammering flats on the sides. The handle, made of aluminum, is 36 cm (14 inches) long; its lower end fits the extension handle when the tool is used as a hoe.") ;
+
 model_list.push("model/stl/v1.stl") ;
     model_callback_list.push(function(gltf) {
 });
-model_tips.push("Wide-bloom header for replace, filter out small rocks") ;
+model_tips.push("broom header, The broom is compatible with the extension handle. ") ;
 
 model_list.push("model/stl/Apollo_lunar_module.stl") ;
     model_callback_list.push(function(gltf) {
     mainRot.y = 90 ;
     $("#main_rot_y").val(90) ;
 });
-model_tips.push("The Apollo luna module, you can pick tools/cars form the module.") ;
+model_tips.push("The Apollo Lunar Module, or simply Lunar Module (LM /ˈlɛm/), originally designated the Lunar Excursion Module (LEM), was the Lunar lander spacecraft that was flown between lunar orbit and the Moon's surface during the United States' Apollo program. It was the first crewed spacecraft to operate exclusively in the airless vacuum of space, and remains the only crewed vehicle to land anywhere beyond Earth.") ;
 
 
 model_list.push("model/dustpan_346/scene.gltf") ;
@@ -38,7 +44,7 @@ model_list.push("model/dustpan_346/scene.gltf") ;
     //gltf.scene.position.set(0,0,20) ;
     mainScaleAdjust = 500 ;
 });
-model_tips.push("dustpan, easy to clean dusts on the lunar surface") ;
+model_tips.push("The sampling scoop is used to collect soil material or other lunar samples too small for the rake or tongs to pick up. The stainless Steel pan of the scoop, which is 5 cm (2 inches) by 11 cm (41/2 inches) by 15 cm (6 inches) has a flat bottom flanged on both sides and apartial cover on the top to prevent loss of contents. The pan is adjustable from horizontal to 55 degrees and 90 degrees from the horizontal for use in scooping andtrenching. The scoop handle is compatible with the extension handle. ") ;
 
 
 model_list.push("model/litter_scoop/scene.gltf") ;
@@ -62,7 +68,7 @@ model_callback_list.push(function(gltf) {
     mainScaleAdjust = 100 ;
     //gltf.scene.scale.set(3,3,3);
 });
-model_tips.push("The Apollo astronauts were provided a small rake that could be used to gather and collect pebbles larger than 1 cm in diameter from the lunar regolith. The rake head (this object) was attached to a handle, which while on the lunar surface was designed to attach to a standard extension handle. Lunar rakes were employed on Apollo 15-17, from July 1971 to December 1972. This artifact was used for training.") ;
+model_tips.push("Lunar rake - The rake is used to collect discrete samples of rocks and rock chips ranging from 1.3 cm (one-half inch) to 2.5 cm (one inch) in size. The rake is adjustable for ease of sample collection and stowage. The tines, formed in the shape of a scoop, are stainless steel. A handle,approximately 25 cm (10 inches) long, attaches to the extension handle for sample collection tasks. ") ;
 
 
 
@@ -82,9 +88,12 @@ model_tips.push("SpaceX to Launch DOGE-1 to the Moon! (Source: Elon Musk's twitt
 model_list.push("model/sci-fi_box/scene.gltf") ;
 model_callback_list.push(function(gltf) {
 })
-model_tips.push("Open the box to collect sample.") ;
+model_tips.push("Sample Return Container - This container maintains a vacuum environment And padded protection for lunar samples. 11.5 by 19 inches) in size, with a knife-edge indium-, silver seal, a strap latch system for closing, and a lever and pin system to support the container in the LM and CM stowage compartments under all vibration and g-force conditions. The drive tubes, special environmental sample container, and the core sample vacuum container as well as some vther specialized pieces of equipment are flown outbound and inbound within the sample return containers, two of which will be carried on Apollo 16.") ;
 
 
+/*
+
+*/
 
 var handposeModel = null; // this will be loaded with the handpose model
 var videoDataLoaded = false; // is webcam capture ready?
@@ -347,14 +356,17 @@ var toggleIndexFingerCheck = function(val) {
         $("#index_finger_status").removeClass("btn-info");
         $("#index_finger_status").addClass("btn-primary");
         $("#index_finger_status").text("IndexFinger Trigger");
-
+        lastIndexFingerStatus = true ;
+        setTimeout(function() {
+            toggleIndexFingerCheck(false) ;
+        },1000) ;
     }
     else {
         $("#index_finger_status").removeClass("btn-primary");
         $("#index_finger_status").addClass("btn-info");
         $("#index_finger_status").text("IndexFinger None");
+        lastIndexFingerStatus = false ;
     }
-    lastIndexFingerStatus = false ;
 }
 /**
     check index finger status:
