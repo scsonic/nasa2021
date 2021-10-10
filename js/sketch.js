@@ -188,6 +188,15 @@ var testLoadPrevObject = function() {
     updateModuleInfo() ;
 };
 
+var testLoadCurrentIndexObject = function() {
+    if ( isLoadingModel == true ) {
+        console.log("is loading model, skip") ;
+        return ;
+    }
+    testLoadMainObject(model_list[model_index], model_callback_list[model_index]) ;
+    updateModuleInfo() ;
+};
+
 
 
 var testLoadMainObject = function(name, callback) {
@@ -681,9 +690,29 @@ var bind_html = function() {
         mainPos.z = $(this).val() ;
         updateAdjustText() ;
     });
+
+    $("#model_select").change(function(){
+        console.log("select change=" + $(this).val()) ;
+        model_index = $(this).val() ;
+        testLoadCurrentIndexObject() ;
+    })
 }
 
 // basic js
 $(function(){
+    // init model_select
+
+    for (var i = 0; i < model_list.length ; i++) {
+        $('#model_select').append("<li index=" + i + "><a>" + model_list[i] + "</a></li>") ;
+    }
+    $("#model_select li").click(function(){
+        var new_index = parseInt($(this).attr("index")) ;
+        //console.log( new_index );
+        model_index = new_index ;
+        testLoadCurrentIndexObject(model_index) ;
+        console.log("Loading " + $(this).text());
+    });
+
+
     bind_html() ;
 }) ;

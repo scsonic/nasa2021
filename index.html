@@ -62,11 +62,39 @@
         to make it easier for folks to view source and remix -->
   <div class="glitchButton" style="position:fixed;top:20px;right:20px;">
     <span id="model_info" style="color: white;">---loading---</span>
-    <span class="btn btn-warning btnPrev glyphicon glyphicon-chevron-left"> Next Tool</span>
-    <span class="btn btn-warning btnNext glyphicon  glyphicon-chevron-right"> Prev Tool</span>
+
+    <span class="dropdown dropdown-menu-left ">
+      <span class="btn btn-default btn-warning dropdown-toggle glyphicon glyphicon-th-list" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+         List
+      </span>
+      <ul class="dropdown-menu dropdown-menu-left" id="model_select" aria-labelledby="dropdownMenu1">
+      </ul>
+    </span>
+
+    <span class="btn btn-warning btnPrev glyphicon glyphicon-chevron-left"> Next</span>
+    <span class="btn btn-warning btnNext glyphicon  glyphicon-chevron-right"> Prev</span>
+
+
+
+    <!--<span class="btn btn-warning btnModelSelect " > Select...</span>
+    -->
+
+
+
+
+
     <span class="btn btn-warning btnPrint glyphicon glyphicon-print" data-toggle="modal" data-target="#exampleModal"> </span>
     <a href="https://github.com/scsonic/nasa2021" target="_blank" class="btn btn-warning btnHelp glyphicon glyphicon-question-sign" data-toggle="modal"></a>
   </div>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a href="#">Action</a></li>
+    <li><a href="#">Another action</a></li>
+    <li><a href="#">Something else here</a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="#">Separated link</a></li>
+  </ul>
+
+
 
   <div class="glitchButton" style="position:fixed;bottom:20px;right:20px; color: white;" >
     <div id="range_debug" style="color: white;">---loading---</div>
