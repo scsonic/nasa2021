@@ -164,8 +164,17 @@ var updateModuleInfo = function() {
 var updateAdjustText = function(){
     var text = "Scale:" + mainScale + "<BR>"  ;
     text = text + "Rot=" + mainRot.x + ", " + mainRot.y + ", " + mainRot.z + "<BR>";
-    text = text + "Pos=" + mainPos.x + ", " + mainPos.y + ", " + mainPos.z ;
+    text = text + "Pos=" + mainPos.x + ", " + mainPos.y + ", " + mainPos.z + "<BR>";
+    if ( currentModelHasAnimations() ) {
+        text = text +  "No Animation" ;
+    }
+    else {
+        text = text +  "Has Animation" ;
+    }
     $("#range_debug").html(text) ;
+
+
+
 }
 
 var testLoadNextObject = function() {
@@ -279,6 +288,15 @@ var testPlayOnce = function() {
             action.play() ;
 	    }
 	}
+}
+
+var currentModelHasAnimations = function(){
+	if ( mainObject._gltf.hasOwnProperty("animations")) {
+	    if ( mainObject._gltf.animations.length > 0) {
+	        return true;
+	    }
+	}
+	return false ;
 }
 
 var testLoadSTL= function(name, callback) {
